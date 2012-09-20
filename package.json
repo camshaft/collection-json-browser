@@ -1,0 +1,23 @@
+{
+  "name": "collection-json-browser",
+  "version": "0.0.0",
+  "description": "Easily browse through collection+json apis",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/CamShaft/collection-json-browser.git"
+  },
+  "author": "Cameron Bytheway",
+  "license": "BSD",
+  "dependencies": {
+    "express": "~3.0.0",
+    "connect-assets": "~2.3.3",
+    "jade": "*",
+    "stylus": "*",
+    "nib": "*",
+    "request": "~2.11.4"
+  }
+}

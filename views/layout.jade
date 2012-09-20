@@ -1,0 +1,31 @@
+doctype 5
+html(data-ng-app="collection-browser")
+  head
+    != css('vendor')
+    != css('app')
+  body
+    block nav
+      .navbar.navbar-fixed-top
+        .navbar-inner
+          .container-fluid
+            a.btn.btn-navbar(data-toggle='collapse', data-target='.nav-collapse')
+              span.icon-bar
+              span.icon-bar
+              span.icon-bar
+            a.brand Collection+JSON Browser
+            .nav-collapse.collapse
+              ul.nav
+                li
+                  a(href="https://github.com/mamund/collection-json",
+                    target="_blank") Info
+                li
+                  a(href="https://github.com/CamShaft/collection-json-browser",
+                    target="_blank") Github
+
+    block content
+    hr
+    footer
+      .container-fluid
+        p © Cameron Bytheway 2012
+    != js('vendor')
+    != js('app')

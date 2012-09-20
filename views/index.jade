@@ -1,0 +1,89 @@
+extends layout
+
+block content
+  div(data-ng-controller="AppController").container-fluid
+    .row-fluid
+      .span3
+        .well.sidebar-nav
+          ul.nav.nav-list
+            li.nav-header Service URL
+            li
+              form(data-ng-submit="navigate(serviceUrl)").service-url.ng-cloak
+                input(data-ng-model="serviceUrl", type="url")
+                input(type="submit", value="Go").btn.btn-primary
+            li.nav-header Links
+            li(data-ng-repeat="link in collection.links").ng-cloak
+              a(rel="{{link.rel}}",
+                href="/?uri={{link.href}}") {{link.prompt||link.rel}}
+
+      .span9.ng-cloak
+        div(data-ng-show="error").row-fluid
+          .alert.alert-error
+            h4 {{error.title}} {{error.code}}
+            | {{error.message}}
+        div(data-ng-show="collection.items").row-fluid
+          h4
+            a(data-ng-click="showItems=!showItems") Items
+          ol(data-ng-show="showItems").offset1
+            li(data-ng-repeat="item in collection.items")
+              dl.dl-horizontal
+                dt URI
+                dd
+                  a(href="/?uri={{item.href}}") {{item.href}}
+                span(data-ng-repeat="property in item.data")
+                  dt {{property.prompt||property.name}}
+                  dd {{property.value||"&nbsp;"}}
+                dt Links
+                dd
+                  ul.links
+                    li(data-ng-repeat="link in item.links")
+                      a(rel="{{link.rel}}",
+                        href="/?uri={{link.href}}")
+                        | {{link.prompt||link.rel}}
+
+        div(data-ng-show="collection.queries").row-fluid
+          h4
+            a(data-ng-click="showQueries=!showQueries") Queries
+          form(data-ng-show="showQueries",
+               data-ng-repeat="queryForm in collection.queries",
+               data-ng-submit="query(queryForm.href, queryForm.data)",
+               name="queryForm.rel").form-horizontal.offset1
+            legend {{queryForm.prompt||queryForm.rel}}
+            div(data-ng-repeat="property in queryForm.data").control-group
+              label(for="template-{{property.name}}").control-label {{property.prompt||property.name}}
+              .controls
+                input(data-ng-model="property.value",
+                      id="template-{{property.name}}")
+            .control-group
+              .controls
+                input(type="submit").btn.btn-primary Submit
+
+        div(data-ng-show="template").row-fluid
+          h4
+            a(data-ng-click="showTemplate=!showTemplate") Template
+          form(data-ng-show="showTemplate",
+               data-ng-submit="submit(template.data)",
+               name="templateForm").form-horizontal.offset1
+            div(data-ng-repeat="property in template.data").control-group
+              label(for="template-{{property.name}}").control-label {{property.prompt||property.name}}
+              .controls
+                input(data-ng-model="property.value",
+                      id="template-{{property.name}}")
+            .control-group
+              .controls
+                input(type="submit").btn.btn-primary Submit
+
+        div(data-ng-show="collection.templates").row-fluid
+          h4
+            a(data-ng-click="showForms=!showForms") Forms
+          ol(data-ng-show="showForms").offset1
+            li(data-ng-repeat="template in collection.templates")
+
+        div(data-ng-show="collection").row-fluid
+          h4
+            a(data-ng-click="showRawResponse=!showRawResponse") Raw Response
+          pre(data-ng-show="showRawResponse").lang-js.offset1
+            {{{collection: collection} | json}}
+
+
+// http://localhost:3001/api/me.json
