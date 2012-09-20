@@ -17,7 +17,7 @@ block content
             li.nav-header Links
             li(data-ng-repeat="link in collection.links").ng-cloak
               a(rel="{{link.rel}}",
-                href="/?uri={{link.href}}") {{link.prompt||link.rel}}
+                href="{{buildURI(link.href)}}") {{link.prompt||link.rel}}
 
       .span9.ng-cloak
         div(data-ng-show="error").row-fluid
@@ -32,7 +32,7 @@ block content
               dl.dl-horizontal
                 dt URI
                 dd
-                  a(href="/?uri={{item.href}}") {{item.href}}
+                  a(href="{{buildURI(item.href)}}") {{item.href}}
                 span(data-ng-repeat="property in item.data")
                   dt {{property.prompt||property.name}}
                   dd {{property.value||"&nbsp;"}}
@@ -41,7 +41,7 @@ block content
                   ul.links
                     li(data-ng-repeat="link in item.links")
                       a(rel="{{link.rel}}",
-                        href="/?uri={{link.href}}")
+                        href="{{buildURI(link.href)}}")
                         | {{link.prompt||link.rel}}
 
         div(data-ng-show="collection.queries").row-fluid

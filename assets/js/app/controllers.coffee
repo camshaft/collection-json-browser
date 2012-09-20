@@ -9,6 +9,10 @@ AppController = [
   (request, $location, $scope)->
     # Default to show the items in the collection
     $scope.showItems = true
+    $scope.useProxy = $location.search().proxy or false
+
+    $scope.buildURI = (href)->
+      "/?proxy=#{$scope.useProxy}&uri=#{href}"
 
     $scope.navigate = (uri)->
       $location.search "uri", uri
@@ -19,7 +23,9 @@ AppController = [
       for property in form
         properties[property.name] = property.value
 
-      request.post($scope.serviceUrl, properties, {}, $scope.useProxy)
+      useProxy = $location.search().proxy
+
+      request.post($scope.serviceUrl, properties, {}, useProxy)
         .success((body, status, headers)->
           console.log "Form submitted"
         )
@@ -42,6 +48,7 @@ AppController = [
 
     makeRequest = ()->
       uri = $location.search().uri
+      useProxy = $location.search().proxy
 
       if not uri or uri == "undefined"
         $scope.collection = null
@@ -50,7 +57,7 @@ AppController = [
         return
 
       $scope.serviceUrl = uri
-      request.get(uri, {}, $scope.useProxy)
+      request.get(uri, {}, useProxy)
         .success((body, status, headers)->
           $scope.collection = body.collection
           $scope.template = angular.copy body.collection.template
@@ -65,6 +72,9 @@ AppController = [
             code: body.code||status
 
     $scope.$watch (()-> $location.absUrl()), makeRequest
+
+    $scope.$watch (()-> $scope.useProxy), ()->
+      $location.search "proxy", $scope.useProxy
 ]
 
 controllers.controller "AppController", AppController
