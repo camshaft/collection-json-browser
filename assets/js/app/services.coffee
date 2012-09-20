@@ -7,21 +7,33 @@ services.factory "request", [
   "content-type"
 
   ($http, proxy, contentType)->
-    get: (uri, headers)->
+    get: (uri, headers, useProxy)->
       headers['content-type'] = contentType
-      $http.get "#{proxy}?uri=#{encodeURIComponent(uri)}", headers
+      if useProxy
+        uri = "#{proxy}?uri=#{encodeURIComponent(uri)}"
+      
+      $http.get uri, headers
 
-    post: (uri, data, headers)->
+    post: (uri, data, headers, useProxy)->
       headers['content-type'] = contentType
-      $http.post "#{proxy}?uri=#{encodeURIComponent(uri)}", data, headers
+      if useProxy
+        uri = "#{proxy}?uri=#{encodeURIComponent(uri)}"
 
-    put: (uri, headers)->
-      headers['content-type'] = contentType
-      $http.put "#{proxy}?uri=#{encodeURIComponent(uri)}", headers
+      $http.post uri, data, headers
 
-    "delete": (uri, headers)->
+    put: (uri, headers, useProxy)->
       headers['content-type'] = contentType
-      $http.delete "#{proxy}?uri=#{encodeURIComponent(uri)}", headers
+      if useProxy
+        uri = "#{proxy}?uri=#{encodeURIComponent(uri)}"
+
+      $http.put uri, headers
+
+    "delete": (uri, headers, useProxy)->
+      headers['content-type'] = contentType
+      if useProxy
+        uri = "#{proxy}?uri=#{encodeURIComponent(uri)}"
+
+      $http.delete uri, headers
 
 ]
 

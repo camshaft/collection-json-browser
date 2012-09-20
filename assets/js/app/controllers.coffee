@@ -12,13 +12,14 @@ AppController = [
 
     $scope.navigate = (uri)->
       $location.search "uri", uri
+      makeRequest()
 
     $scope.submit = (form)->
       properties = {}
       for property in form
         properties[property.name] = property.value
 
-      request.post($scope.serviceUrl, properties, {})
+      request.post($scope.serviceUrl, properties, {}, $scope.useProxy)
         .success((body, status, headers)->
           console.log "Form submitted"
         )
@@ -39,7 +40,7 @@ AppController = [
 
       $location.search "uri", uri
 
-    $scope.$watch (()-> $location.absUrl()), ()->
+    makeRequest = ()->
       uri = $location.search().uri
 
       if not uri or uri == "undefined"
@@ -49,7 +50,7 @@ AppController = [
         return
 
       $scope.serviceUrl = uri
-      request.get(uri, {})
+      request.get(uri, {}, $scope.useProxy)
         .success((body, status, headers)->
           $scope.collection = body.collection
           $scope.template = angular.copy body.collection.template
@@ -62,6 +63,8 @@ AppController = [
             title: body.title||"Error"
             message: body.message||body
             code: body.code||status
+
+    $scope.$watch (()-> $location.absUrl()), makeRequest
 ]
 
 controllers.controller "AppController", AppController

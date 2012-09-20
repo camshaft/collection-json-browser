@@ -11,6 +11,9 @@ block content
               form(data-ng-submit="navigate(serviceUrl)").service-url.ng-cloak
                 input(data-ng-model="serviceUrl", type="url")
                 input(type="submit", value="Go").btn.btn-primary
+                label.checkbox.inline
+                  input(type="checkbox", data-ng-model="useProxy")
+                  | Use Proxy
             li.nav-header Links
             li(data-ng-repeat="link in collection.links").ng-cloak
               a(rel="{{link.rel}}",
