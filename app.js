@@ -14,12 +14,12 @@ app.configure(function(){
   app.set('port', process.env.PORT || 3000);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
-  app.use(require('connect-assets')());
+  app.use(require('connect-assets')({buildDir: 'public'}));
   app.use(express.favicon());
   app.use(express.logger('dev'));
   app.use(express.methodOverride());
   app.use(app.router);
-  app.use(express.static(path.join(__dirname, 'public')));
+  app.use(express.static(path.join(__dirname, 'public'), { maxAge: 365 * 24 * 60 * 60 * 1000 })); // One year
   app.use(function(req, res, next) {
     res.render('index')
   });
@@ -41,7 +41,6 @@ app.all("/proxy", function(req, res) {
   delete options.headers['referer']
   delete options.headers['host']
 
-  console.log(options);
   request(options).pipe(res);
 });
 
