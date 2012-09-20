@@ -37,6 +37,11 @@ app.all("/proxy", function(req, res) {
     headers: req.headers,
     body: req.body
   }
+  delete options.headers['x-requested-with']
+  delete options.headers['referer']
+  delete options.headers['host']
+
+  console.log(options);
   request(options).pipe(res);
 });
 
