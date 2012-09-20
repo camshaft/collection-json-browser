@@ -53,7 +53,8 @@ block content
               label(for="template-{{property.name}}").control-label {{property.prompt||property.name}}
               .controls
                 input(data-ng-model="property.value",
-                      id="template-{{property.name}}")
+                      id="template-{{property.name}}",
+                      type="text")
             .control-group
               .controls
                 input(type="submit").btn.btn-primary Submit
@@ -68,7 +69,8 @@ block content
               label(for="template-{{property.name}}").control-label {{property.prompt||property.name}}
               .controls
                 input(data-ng-model="property.value",
-                      id="template-{{property.name}}")
+                      id="template-{{property.name}}",
+                      type="text")
             .control-group
               .controls
                 input(type="submit").btn.btn-primary Submit
