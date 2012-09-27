@@ -41,7 +41,12 @@ app.all("/proxy", function(req, res) {
   delete options.headers['referer']
   delete options.headers['host']
 
-  request(options).pipe(res);
+  try {
+    request(options).pipe(res);
+  }
+  catch(error) {
+    res.send(500);
+  }
 });
 
 http.createServer(app).listen(app.get('port'), function(){
