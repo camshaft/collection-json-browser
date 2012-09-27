@@ -9,10 +9,10 @@ AppController = [
   (request, $location, $scope)->
     # Default to show the items in the collection
     $scope.showItems = true
-    $scope.useProxy = $location.search().proxy or false
+    $scope.useProxy = if $location.search().proxy is "false" then false else true
 
     $scope.buildURI = (href)->
-      "/?proxy=#{$scope.useProxy}&uri=#{href}"
+      "/?proxy=#{$scope.useProxy}&uri=#{encodeURIComponent(href)}"
 
     $scope.navigate = (uri)->
       $location.search "uri", uri
@@ -23,7 +23,7 @@ AppController = [
       for property in form
         properties[property.name] = property.value
 
-      useProxy = $location.search().proxy
+      useProxy = $scope.useProxy
 
       request.post($scope.serviceUrl, properties, {}, useProxy)
         .success((body, status, headers)->
@@ -48,7 +48,7 @@ AppController = [
 
     makeRequest = ()->
       uri = $location.search().uri
-      useProxy = $location.search().proxy
+      useProxy = $scope.useProxy
 
       if not uri or uri == "undefined"
         $scope.collection = null
