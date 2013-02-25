@@ -40,11 +40,17 @@ AppController = [
       for property in form
         properties[property.name] = property.value
 
-      uri = href
-
       # build query params from form
+      params = (encodeProperty p for p in form)
+      params = params.join('&')
+
+      uri = [href, params].join('?')
+      useProxy = $scope.useProxy
 
       $location.search "uri", uri
+
+    encodeProperty = (prop)->
+         encodeURIComponent(prop.name) + "=" + encodeURIComponent(prop.value)
 
     makeRequest = ()->
       uri = $location.search().uri
